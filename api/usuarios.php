@@ -6,7 +6,7 @@
 
 header("Content-Type: application/json");
 include_once("../clases/class-usuario.php");
-
+sleep(1);
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $_POST = json_decode(file_get_contents('php://input'), true);
@@ -28,11 +28,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     case 'PUT':
         $_PUT = json_decode(file_get_contents('php://input'), true);
+        $usuario = new Usuario($_PUT['userId'], $_PUT['userName'], $_PUT['password'], $_PUT['tipo']);
+        $usuario->actualizarUsuario($_GET['id']);
+
         $resultado["mensaje"] = "actualizar un usuario con el id: " . $_GET['id'] . ",informacion a actualizar" . json_encode($_PUT);
         echo json_encode($resultado);
         break;
     case 'DELETE':
-        Usuario::eliminarUsuario($_GET['id']);
+        Usuario::eliminarUsuario($_GET["id"]);
         $resultado["mensaje"] =  "eliminar un usuario con el id: " . $_GET['id'];
         echo json_encode($resultado);
         break;
